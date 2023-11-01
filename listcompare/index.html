@@ -34,7 +34,7 @@
         }
         .description {
             color: gray;
-            margin-bottom: 20px;                     
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -60,8 +60,20 @@
 
     <script>
         function compareLists() {
-            var listA = document.getElementById("listA").value.replace(/[^0-9\n]/g, '').split('\n');
-            var listB = document.getElementById("listB").value.replace(/[^0-9\n]/g, '').split('\n');
+            var listA = document.getElementById("listA").value.split('\n');
+            var listB = document.getElementById("listB").value.split('\n');
+
+            listA = listA.map(function(item) {
+                return item.split(' ')[0]; // Get the first part of the string before space
+            }).filter(function(item) {
+                return item !== ''; // Remove empty strings
+            });
+
+            listB = listB.map(function(item) {
+                return item.split(' ')[0]; // Get the first part of the string before space
+            }).filter(function(item) {
+                return item !== ''; // Remove empty strings
+            });
 
             var uniqueListA = Array.from(new Set(listA));
             var uniqueListB = Array.from(new Set(listB));
