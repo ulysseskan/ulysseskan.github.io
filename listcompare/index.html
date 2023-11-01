@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Comparison</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .list-container {
+            width: 15em;
+        }
+        .textarea-container {
+            margin-right: 2em;
+        }
+        textarea {
+            width: 100%;
+            height: 500px; /* Initial height */
+            resize: vertical; /* Allow vertical resizing */
+        }
+        .highlight {
+            background-color: yellow;
+        }
+        .description {
+            color: gray;
+            margin-bottom: 20px;                     
+        }
+    </style>
+</head>
+<body>
+    <h1>List Comparison</h1>
+    <div class="description">
+        This tool compares two lists of numbers entered in the text areas below.<br>
+        It identifies numbers that are unique to each list and highlights the differences.<br>
+        Non-numeric characters are ignored.
+    </div>
+    <div class="container">
+        <div class="list-container textarea-container">
+            <label for="listA">Enter List A, numbers, separated by newlines:</label>
+            <textarea id="listA" rows="100" cols="15"></textarea>
+        </div>
+        <div class="list-container textarea-container">
+            <label for="listB">Enter List B, numbers, separated by newlines:</label>
+            <textarea id="listB" rows="100" cols="15"></textarea>
+        </div>
+    </div>
+    <button onclick="compareLists()">Submit</button><br><br>
+    <div id="result"></div>
+
+    <script>
+        function compareLists() {
+            var listA = document.getElementById("listA").value.replace(/[^0-9\n]/g, '').split('\n');
+            var listB = document.getElementById("listB").value.replace(/[^0-9\n]/g, '').split('\n');
+
+            var uniqueListA = Array.from(new Set(listA));
+            var uniqueListB = Array.from(new Set(listB));
+
+            var diffAB = uniqueListB.filter(num => !uniqueListA.includes(num));
+            var diffBA = uniqueListA.filter(num => !uniqueListB.includes(num));
+
+            var resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = '';
+
+            if (diffAB.length > 0) {
+                resultDiv.innerHTML += "These numbers from List B are NOT in List A: " + diffAB.join(", ") + "<br><br>";
+            }
+
+            if (diffBA.length > 0) {
+                resultDiv.innerHTML += "These numbers from List A are NOT in List B: " + diffBA.join(", ");
+            }
+
+            if (diffAB.length === 0 && diffBA.length === 0) {
+                resultDiv.textContent = "All numbers are either contained in both lists or there are no numbers entered.";
+            }
+
+            highlightDifferences();
+        }
+
+        function highlightDifferences() {
+            var listA = document.getElementById("listA").value.split('\n');
+            var listB = document.getElementById("listB").value.split('\n');
+
+            listA.forEach(function (item, index) {
+                if (listB.includes(item)) {
+                    document.getElementById("listA").setSelectionRange(document.getElementById("listA").value.indexOf(item), document.getElementById("listA").value.indexOf(item) + item.length);
+                }
+            });
+
+            listB.forEach(function (item, index) {
+                if (listA.includes(item)) {
+                    document.getElementById("listB").setSelectionRange(document.getElementById("listB").value.indexOf(item), document.getElementById("listB").value.indexOf(item) + item.length);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
