@@ -61,19 +61,16 @@
 
     <script>
         function compareLists() {
-            var listA = document.getElementById("listA").value.split('\n');
-            var listB = document.getElementById("listB").value.split('\n');
-
-            listA = listA.map(function(item) {
-                return item.split(' ')[0]; // Get the first part of the string before space
+            var listA = document.getElementById("listA").value.split('\n').map(function(line) {
+                return line.replace(/[^0-9].*/, ''); // Strip everything after the first non-numeric character
             }).filter(function(item) {
-                return item !== ''; // Remove empty strings
+                return item !== ''; // Remove empty lines after stripping
             });
 
-            listB = listB.map(function(item) {
-                return item.split(' ')[0]; // Get the first part of the string before space
+            var listB = document.getElementById("listB").value.split('\n').map(function(line) {
+                return line.replace(/[^0-9].*/, ''); // Strip everything after the first non-numeric character
             }).filter(function(item) {
-                return item !== ''; // Remove empty strings
+                return item !== ''; // Remove empty lines after stripping
             });
 
             var uniqueListA = Array.from(new Set(listA));
@@ -99,6 +96,7 @@
 
             highlightDifferences();
         }
+
 
         function highlightDifferences() {
             var listA = document.getElementById("listA").value.split('\n');
