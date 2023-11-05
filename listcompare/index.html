@@ -23,12 +23,18 @@
         .list-container {
             width: 15em;
         }
+
+        .list-container label {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
         .textarea-container {
             margin-right: 2em;
         }
         textarea {
-            width: 100%;
-            height: 500px; /* Initial height */
+            width: 98%;
+            height: 50vh; /* Initial height */
             resize: vertical; /* Allow vertical resizing */
         }
         .highlight {
@@ -43,6 +49,9 @@
             margin-top: 20px;
             border-top: 1px solid #ccc;
             width: 100%;
+        }
+        pre {
+            overflow-x: auto; /* Enable horizontal scrollbar if necessary */
         }
     </style>
 </head>
@@ -146,8 +155,7 @@ if any(num.strip() for num in listB.split(',')):
         if exists_in_listA:
             print(f"{num.strip()} exists in List A")
         else:
-            print(f"{num.strip()} does not exist in List A")
-</code>
+            print(f"{num.strip()} does not exist in List A")</code>
         </pre>
 <br>
 
