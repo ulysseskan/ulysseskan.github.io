@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="prism.css" rel="stylesheet" />
+    <title>List Comparison</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 2;
+            font-family: Helvetica, Arial;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .list-container label {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .textarea-container {
+            margin-right: 2em;
+        }
+        textarea {
+            width: 98%;
+            height: 50vh; /* Initial height */
+            resize: vertical; /* Allow vertical resizing */
+        }
+        .highlight {
+            background-color: yellow;
+        }
+        .description {
+            color: gray;
+            margin-bottom: 20px;
+        }
+
+        .hr-divider {
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+            width: 100%;
+        }
+        pre {
+            overflow-x: auto; /* Enable horizontal scrollbar if necessary */
+        }
+    </style>
+</head>
+<body>
+    <h1>Compare Two Lists of Numbers</h1>
+    <div class="description">
+        Enter two lists into the text areas below.  <b>Separate each list item by a newline.</b><br>
+
+        <ul>
+        <li>This tool identifies lines that are unique to each list.</li>
+        <li>Do you save anything I enter?  No.  All calculations are done in the browser using JavaScript.</li>
+        <p></p>
+    </ul>
+    </div>
+    <div class="container">
+        <div class="list-container textarea-container">
+            <label for="listA">Enter List A:</label>
+            <textarea id="listA" rows="100" cols="15"></textarea>
+        </div>
+        <div class="list-container textarea-container">
+            <label for="listB">Enter List B:</label>
+            <textarea id="listB" rows="100" cols="15"></textarea>
+        </div>
+    </div>
+    <button onclick="compareLists()">Submit</button><br><br>
+    <div id="result"></div>
+
+    <script>
+        function compareLists() {
+
+        var listA = document.getElementById("listA").value.split('\n');
+
+        var listB = document.getElementById("listB").value.split('\n');
+
+        var matches = [];
+
+        for (var i = 0; i < listA.length; i++) {
+        for (var j = 0; j < listB.length; j++) {
+            if (listA[i] === listB[j]) {
+            matches.push(listA[i]);
+            }
+        }
+        }
+
+        var resultDiv = document.getElementById("result");
+
+        if (matches.length > 0) {
+        resultDiv.innerHTML = matches.join("<br>") + "<br><br>" + matches.length + " matching lines";
+        } else {
+        resultDiv.textContent = "No matching lines found.";
+        }
+
+        }
+
+    </script>
+
+
+
+<div class="hr-divider"></div>
+
+<h1>Other Ways To Do This:</h1>
+<br>
+<h2>excel</h2> Given List A in column A, List B in column B, and the following formula
+pasted in C1, to find values in B that don't exist in A:
+<pre><code class="language-excel-formula">
+=IF(SUMPRODUCT(--ISNUMBER(SEARCH(TEXT(B1, 0), $A$1:$A$100))) > 0, "Exists in List A", "Not in List A")
+</code>
+</pre>
+<br>
+
+<h2>bash</h2>
+<pre> <code class="language-bash">
+listA=""; listB=""; for num in $listB; do [[ $listA =~ (^|[^0-9])$num([^0-9]|$) ]] &&
+echo "$num exists in List A" || echo "$num does not exist in List A"; done
+</code>
+</pre>
+<br>
+
+<h2>python</h2>
+<pre><code class="language-python">
+listA, listB = "", ""
+
+if any(num.strip() for num in listB.split(',')):
+    for num in listB.split(','):
+        cleaned_num = ''.join(filter(str.isdigit, num.strip()))
+        exists_in_listA = any(cleaned_num in item for item in map \
+        (lambda x: ''.join(filter(str.isdigit, x)), listA.split(', ')))
+        if exists_in_listA:
+            print(f"{num.strip()} exists in List A")
+        else:
+            print(f"{num.strip()} does not exist in List A")</code>
+        </pre>
+<br>
+
+<script src="prism.js"></script>
+</body>
+</html>
