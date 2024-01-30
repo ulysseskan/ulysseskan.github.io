@@ -79,20 +79,27 @@
     <script>
         function compareLists() {
 
+        // Get values and split into arrays
         var listA = document.getElementById("listA").value.split('\n');
-
         var listB = document.getElementById("listB").value.split('\n');
 
+        // Deduplicate arrays
+        var dedupedA = [...new Set(listA)];
+        var dedupedB = [...new Set(listB)];
+
+        // Initialize matches array
         var matches = [];
 
-        for (var i = 0; i < listA.length; i++) {
-        for (var j = 0; j < listB.length; j++) {
-            if (listA[i] === listB[j]) {
-            matches.push(listA[i]);
+        // Loop through arrays to find matches
+        for (var i = 0; i < dedupedA.length; i++) {
+        for (var j = 0; j < dedupedB.length; j++) {
+            if (dedupedA[i] === dedupedB[j]) {
+            matches.push(dedupedA[i]);
             }
         }
         }
 
+        // Output results
         var resultDiv = document.getElementById("result");
 
         if (matches.length > 0) {
